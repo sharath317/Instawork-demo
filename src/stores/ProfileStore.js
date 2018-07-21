@@ -6,6 +6,7 @@ class ProfileStore {
   @observable editDialogVisible = false;
   @observable clickedProfile = {};
   @observable role = "";
+  @observable actualRole = "admin";
   @observable profiles = [
     {id:"1", name: "Sharath Chandra",role:"admin",phone:"8553210878",mail:"yarra317@gmal.com"},
     {id:"2", name: "Mark Butcher",role:"regular",phone:"9490535454",mail:"yarra317@gmal.com"},
@@ -37,7 +38,17 @@ class ProfileStore {
     this.profiles.splice(index,1);
     this.editDialogVisible = false;
   };
-  
+
+  @action toggleUsers = () => {
+    if(this.actualRole === "admin"){
+      this.actualRole = "regular";
+    }
+    else{
+      this.actualRole = "admin";
+    }
+
+  };
+
   @action showProfileDialog = () => {
     this.addDialogVisible = true;
   };

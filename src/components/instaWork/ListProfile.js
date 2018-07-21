@@ -17,14 +17,27 @@ class ListProfile extends Component {
     this.props.ProfileStore.showEditProfileDialog(id);
   }
 
+  toggleUsers = ()=>{
+      this.props.ProfileStore.toggleUsers();
+  }
+
   render() {
-    let {profiles}  = this.props.ProfileStore;
+    let {profiles,actualRole}  = this.props.ProfileStore;
+
+    function filterByRole(profile) {
+      if (profile.role=== actualRole) {
+        return true;
+      }
+      return false;
+    }
+
+    let newProfiles = profiles.filter(filterByRole);
 
     return (
       <div>
         <Card className="md-cell">
           <div className="md-grid md-full-width">
-            <Cell size={10} style={{textAlign:'left'}}>
+            <Cell size={8} style={{textAlign:'left'}}>
               <h2>{"Team Members"}</h2>
               <h3 style={{color:"grey"}}>{"you have " + profiles.length + " team members"}</h3>
             </Cell>
@@ -36,10 +49,18 @@ class ListProfile extends Component {
                 </span>
               </button>
             </Cell>
+            <Cell size={2} style={{textAlign:'right'}}>
+              <button style={{cursor:'pointer',border:'0px',background:"white"}}
+                onClick={() => this.toggleUsers()}>
+                <span style={{color:"#3f63b5",fontSize:"3.5em"}}>
+                  toggle
+                </span>
+              </button>
+            </Cell>
           </div>
           <CardText>
-            {profiles.map(({name,role,phone,mail,id }) => (
-              <div onClick={() => this.showEditProfileDialog(id)} key={name} className="md-grid md-full-width" style={{display:'flex',background:'#eee',borderBottom: '2px solid white'}}>
+            {newProfiles.map(({name,role,phone,mail,id }) => (
+               <div onClick={() => this.showEditProfileDialog(id)} key={name} className="md-grid md-full-width" style={{display:'flex',background:'#eee',borderBottom: '2px solid white'}}>
                 <Cell size={2} style={{textAlign:'left'}}>
                   <span style={{fontSize:"3em"}}>
                     <FontIcon iconClassName="fa fa-user-circle" />
